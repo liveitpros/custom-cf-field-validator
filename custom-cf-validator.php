@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Custom Caldera Forms Field Validator Example
+ * Plugin Name: Custom Caldera Forms Field Validator For Merchant Account Application
  */
-add_filter('caldera_forms_get_form_processors', 'my_custom_cf_validator_processor');
+add_filter('caldera_forms_get_form_processors', 'fms_cf_validator_processor');
 
 /**
  * Add a custom processor for field validation
@@ -13,11 +13,11 @@ add_filter('caldera_forms_get_form_processors', 'my_custom_cf_validator_processo
  *
  * @return array
  */
-function my_custom_cf_validator_processor($processors){
-    $processors['my_custom_cf_validator'] = array(
+function fms_cf_validator_processor($processors){
+    $processors['fms_cf_validator'] = array(
         'name' => __('Custom Validator', 'my-text-domain' ),
         'description' => '',
-        'pre_processor' => 'my_custom_validator',
+        'pre_processor' => 'fms_validator',
         'template' => dirname(__FILE__) . '/config.php'
 
     );
@@ -33,20 +33,20 @@ function my_custom_cf_validator_processor($processors){
  *
  * @return array|void Error array if needed, else void.
  */
-function my_custom_validator( array $config, array $form ){
+function fms_validator( array $config, array $form ){
 
     //Processor data object
-    $data = new Caldera_Forms_Processor_Get_Data( $config, $form, my_custom_cf_validator_fields() );
+    $data = new Caldera_Forms_Processor_Get_Data( $config, $form, fms_cf_validator_fields() );
 
     //Value of field to be validated
-    $value = $data->get_value( 'field-to-validate' );
+    $value = $data->get_value( 'fld_4177753' );
 
     //if not valid, return an error
-    if( false == my_custom_cf_validator_is_valid( $value ) ){
+    if( false == fms_cf_validator_is_valid( $value ) ){
 
         //get ID of field to put error on
         $fields = $data->get_fields();
-        $field_id = $fields[ 'field-to-validate' ][ 'config_field' ];
+        $field_id = $fields[ 'DBAName' ][ 'config_field' ];
 
         //Get label of field to use in error message above form
         $field = $form[ 'fields' ][ $field_id ];
@@ -77,7 +77,7 @@ function my_custom_validator( array $config, array $form ){
  *
  * @return bool
  */
-function my_custom_cf_validator_is_valid( $value ){
+function fms_cf_validator_is_valid( $value ){
     return in_array( $value, array(
         'Han Solo',
         'Chewbacca',
@@ -90,10 +90,10 @@ function my_custom_cf_validator_is_valid( $value ){
  *
  * @return array
  */
-function my_custom_cf_validator_fields(){
+function fms_cf_validator_fields(){
     return array(
         array(
-            'id' => 'field-to-validate',
+            'id' => 'fld_4177753',
             'type' => 'text',
             'required' => true,
             'magic' => true,
